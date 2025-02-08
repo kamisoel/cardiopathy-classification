@@ -216,6 +216,8 @@ class EllipseFitRotated(transforms.MapTransform):
         select_fn: function to select expected foreground, default is to select values > 0.
         depth_axis:
         rot90_only: bool, if true only rotate by 90 degree steps, else rotate by exact theta
+        target_rot: rotation in radians, if rot90_only is False, images will be rotated so the long-axis \
+                    rotation is equal to target_rot (default 45°)
         allow_missing_keys: don't raise exception if key is missing.
     """
     # numpy for opencv, torch for own impl
@@ -228,6 +230,7 @@ class EllipseFitRotated(transforms.MapTransform):
         select_fn: Callable = is_positive,
         depth_axis: int = -1,
         rot90_only: bool = True,
+        target_rot: float = np.deg2rad(45),
         allow_missing_keys: bool = False,
     ) -> None:
         super().__init__(keys, allow_missing_keys)
@@ -237,6 +240,7 @@ class EllipseFitRotated(transforms.MapTransform):
         self.select_fn = select_fn
         self.depth_axis = depth_axis
         self.rot90_only = rot90_only
+        self.target_rot = target_rot
 
     def __call__(self, data: Mapping[Hashable, NdarrayOrTensor]) -> dict[Hashable, NdarrayOrTensor]:
         d = dict(data)
@@ -255,7 +259,7 @@ class EllipseFitRotated(transforms.MapTransform):
 
 
         thetas = convert_to_tensor(thetas, track_meta=get_track_meta()) # (channel, depth)
-        # thetas = torch.nanmean(thetas, dim=1) # (channel,)
+        thetas = torch.nanmean(thetas, dim=1) # (channel,)
         theta = torch.nanmean(thetas) # (1,)
 
         for key in self.key_iterator(d):
@@ -266,7 +270,7 @@ class EllipseFitRotated(transforms.MapTransform):
                 d[key] = transforms.Rotate90(k, tuple(spatial_axis))(d[key])
             else:
                 angles = torch.zeros(3)
-                angles[self.depth_axis] = -theta
+                angles[self.depth_axis] = theta + self.target_rot
                 d[key] = transforms.Rotate(angles)(d[key])
         return d
 
@@ -293,7 +297,7 @@ class EllipseFitRotated(transforms.MapTransform):
                 cntrs = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
                 cntrs = cntrs[0] if len(cntrs) == 2 else cntrs[1]
                 # get rotated rectangle from outer contour by fitting an ellipse
-                if len(cntrs) < 10:
+                if len(cntrs[0]) < 10: # not enough points to fit ellipse
                     theta_batch[c, d] = np.nan
                     continue
                 ellipse = cv2.fitEllipse(cntrs[0])

@@ -1,18 +1,35 @@
 # Cardiopathy Classification Project
 
-## Repository Link
+[GitHub](https://github.com/kamisoel/cardiopathy-classification) | 
+[AI4imaging Kaggle Challenge](https://www.kaggle.com/competitions/ai4imaging-hackathon-2024/)
 
-[https://github.com/kamisoel/cardiopathy-classification]
+The goal of the challenge is to build a deep learning or radiomics model to classify
+heart diseases based on Cine Heart Magnetic Resonance Images (MRI).
 
-## Description
+## Dataset
 
-Classify heart diseases based on Cine Heart Magnetic Resonance Images (MRI)
+The provided dataset is a shuffled version of the Automated Cardiac Diagnosis Challenge (ACDC).
+It contains 3D cardiac MRI data of 150 subjects (100 training + 50 testing).
+For each subject two frames (end-systolic and end-diastolic) are given. 
+Additionally, segmentation masks for the right ventricle (RV), left ventricle (LV)
+and myocardium (MC) are provided.  
+The aim is to automatically categorize each subject into one of five classes:
+- Normal (NOR)
+- Myocardial infarction (MINF)
+- Dilated cardiomyopathy (DCM)
+- Hypertrophic cardiomyopathy (HCM)
+- Abnormal right ventricle (RV)
+
+For evaluation Mean F1-Score is used, which maximize both precision and recall simultaneously.
 
 ### Results Summary
 
-- **Best Model:** [Name of the best-performing model]
-- **Evaluation Metric:** [e.g., Accuracy, F1-Score, MSE]
-- **Result:** [e.g., 95% accuracy, F1-score of 0.8]
+- **Best Model:** RBF-SVM based on calculated features (volumes, thickness, ejaction fraction, etc.)
+- **F1-score:** *0.98*
+
+
+- **DL Model:** ResNet18 (using Monai & PyTorch Ligthning)
+- **F1-score:** 0.8
 
 ## Documentation
 
@@ -24,4 +41,4 @@ Classify heart diseases based on Cine Heart Magnetic Resonance Images (MRI)
 
 ## Cover Image
 
-![Project Cover Image](CoverImage/cover_image.png)
+![Project Cover Image](CoverImage/cover_image.jpg)
