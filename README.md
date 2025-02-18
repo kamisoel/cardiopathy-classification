@@ -41,4 +41,4 @@ For evaluation Mean F1-Score is used, which maximize both precision and recall s
 
 ## Cover Image
 
-![Project Cover Image](CoverImage/cover_image.jpg)
+![Project Cover Image](Images/cover_image.jpg)

@@ -271,7 +271,7 @@ class EllipseFitRotated(transforms.MapTransform):
             else:
                 angles = torch.zeros(3)
                 angles[self.depth_axis] = theta + self.target_rot
-                d[key] = transforms.Rotate(angles)(d[key])
+                d[key] = transforms.Rotate(angles, padding_mode="zeros")(d[key])
         return d
 
 
