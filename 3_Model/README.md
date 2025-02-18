@@ -28,4 +28,5 @@ To test the optimal preprocessing the custom DataModule implementation is config
 * Batch Size between 10-20
 * Further hyperparameter tuning with *optuna*
 
+![resnet_results.png](../Images/resnet_results.png)
 --> F1-Score: ~0.8 

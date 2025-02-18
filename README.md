@@ -23,13 +23,14 @@ The aim is to automatically categorize each subject into one of five classes:
 For evaluation Mean F1-Score is used, which maximize both precision and recall simultaneously.
 
 ### Results Summary
+Result based on Kaggle test set:
+- **Best Model:** 
+  - RBF-SVM based on calculated features (ventricle volumes, myocardium thickness, SV, EF, etc.)
+  - **F1-score:** *0.98*
 
-- **Best Model:** RBF-SVM based on calculated features (volumes, thickness, ejaction fraction, etc.)
-- **F1-score:** *0.98*
-
-
-- **DL Model:** ResNet18 (using Monai & PyTorch Ligthning)
-- **F1-score:** 0.8
+- **DL Model:** 
+  - ResNet18 (using Monai & PyTorch Ligthning)
+  - **F1-score:** 0.8
 
 ## Documentation
 
